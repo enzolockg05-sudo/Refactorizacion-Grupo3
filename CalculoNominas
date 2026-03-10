@@ -1,31 +1,38 @@
-public class CalculoNominas {fghfghfhf
+public class CalculoNominas {
     public static void main(String[] args) {
-        // Datos: Nombre, Horas trabajadas, Categoría (1: Junior, 2: Senior), Ventas realizadas
-        String[] emp = {"Ana", "Juan", "Elena"};
-        int[] h = {160, 180, 140};
-        int[] cat = {1, 2, 1};
-        double[] v = {500.0, 2000.0, 0.0};
-        double t = 0;  // Total pagado por la empresa
-        for (int i = 0; i < emp.length; i++) {
-            double s = 0;
-            // Pago por hora según categoría
-            if (cat[i] == 1) {
-                s = h[i] * 10;  // 10€/h para Junior
-            } else if (cat[i] == 2) {
-                s = h[i] * 20;  // 20€/h para Senior
+        
+        String[] empleados = {"Ana", "Juan", "Elena"};
+        int[] horas = {160, 180, 140};
+        int[] categoria = {1, 2, 1};
+        double[] ventas = {500.0, 2000.0, 0.0};
+        final double vendeMucho = 0.10;
+        final double vendePoco = 0.05;
+        final int horasJunior = 10;
+        final int horasSenior = 20;
+        double totalCoste = 0; // Total pagado por la empresa
+
+        for (int i = 0; i < empleados.length; i++) {
+            double salario = 0;
+
+            if (categoria[i] == 1) {
+                salario = horas[i] * horasJunior; // 10€/h para Junior
+            } else if (categoria[i] == 2) {
+                salario = horas[i] * horasSenior; // 20€/h para Senior
             }
-            // Plus por ventas (Comisión)
-            if (v[i] > 1000) {
-                s = s + (v[i] * 0.10);  // 10% si vende mucho
+
+            if (ventas[i] > 1000) {
+                salario = salario + (ventas[i] * vendeMucho);
             } else {
-                s = s + (v[i] * 0.05);  // 5% si vende poco
+                salario = salario + (ventas[i] * vendePoco);
             }
-            // Retención fija del 15%
-            double ret = s * 0.15;
-            double n = s - ret;
-            System.out.println("Empleado: " + emp[i] + " | Neto: " + n);
-            t += n;
+
+            double retencionFija = salario * 0.15;
+            double n = salario - retencionFija;
+
+            System.out.println("Empleado: " + empleados[i] + " | Neto: " + n);
+            totalCoste += n;
         }
-        System.out.println("Coste total empresa: " + t);
+
+        System.out.println("Coste total empresa: " + totalCoste);
     }
 }
