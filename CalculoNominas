@@ -9,15 +9,15 @@ public class CalculoNominas {
         final double vendePoco = 0.05;
         final int horasJunior = 10;
         final int horasSenior = 20;
-        double totalCoste = 0; // Total pagado por la empresa
+        double totalCoste = 0;
 
         for (int i = 0; i < empleados.length; i++) {
             double salario = 0;
 
             if (categoria[i] == 1) {
-                salario = horas[i] * horasJunior; // 10€/h para Junior
+                salario = horas[i] * horasJunior;
             } else if (categoria[i] == 2) {
-                salario = horas[i] * horasSenior; // 20€/h para Senior
+                salario = horas[i] * horasSenior;
             }
 
             if (ventas[i] > 1000) {
