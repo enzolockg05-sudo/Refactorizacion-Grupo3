@@ -1,11 +1,11 @@
-public class CalculoNominas {dgsdgdsgg
+public class CalculoNominas {
     public static void main(String[] args) {
         // Datos: Nombre, Horas trabajadas, Categoría (1: Junior, 2: Senior), Ventas realizadas
-        String[] emp = {"Ana", "Juan", "Elena"};
-        int[] h = {160, 180, 140};
-        int[] cat = {1, 2, 1};
-        double[] v = {500.0, 2000.0, 0.0};
-        double t = 0;  // Total pagado por la empresa
+        String[] Nombre = {"Ana", "Juan", "Elena"};
+        int[] Horas = {160, 180, 140};
+        int[] Categoria = {1, 2, 1};
+        double[] Ventas = {500.0, 2000.0, 0.0};
+        double Total = 0;  // Total pagado por la empresa
         for (int i = 0; i < emp.length; i++) {
             double s = 0;
             // Pago por hora según categoría
