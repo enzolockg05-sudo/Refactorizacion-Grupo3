@@ -1,70 +1,65 @@
-public class CalculoNominas1 {
+public class CalculoNominasFinal {
 
-    // (Paso de Constantes)
-    // Nombramos las variables con números fijos aquí arriba para que no se puedan modificar
-    private static final double CATEGORIA_1 = 10.0; // Precio hora categoría baja
-    private static final double CATEGORIA_2 = 20.0; // Precio hora categoría alta
-    private static final double COMISION_INTERMEDIA = 1000.0; // A partir de cuánto se paga más comisión
-    private static final double COMISION_ALTA = 0.10; // El 10% para los que hacen muchas ventas
-    private static final double COMISION_BAJA = 0.05; // El 5% para el resto de empleados con menos ventas
-    private static final double IRPF = 0.15;
+    // Se declaran fuera del main 
+    // 5. USO DE CONSTANTES (final double)
+    private static final double PAGO_HORA_JUNIOR = 10.0; // Precio hora categoría Junior
+    private static final double PAGO_HORA_SENIOR = 20.0; // Precio hora categoría Senior
+    private static final double PORCENTAJE_RETENCION = 0.15; // Declaramos el porcentaje de retención
+    private static final double COMISION_ALTA = 0.10; // Comisión para un tipo de ventas superiores al resto
+    private static final double COMISION_BAJA = 0.05; // Comisión mínima para un tipo de ventas normales
+    private static final double LIMITE_VENTAS_COMISION = 1000.0; // Es el límite de ventas para tener una comisión alta
 
     public static void main(String[] args) {
-
-        // --- LISTADO DE TRABAJADORES (Paso Renamme: Nombres descriptivos)
+        // 3. RENOMBRADO (Nombres significativos)
         String[] nombresEmpleados = {"Ana", "Juan", "Elena"};
         int[] horasTrabajadas = {160, 180, 140};
-        int[] categorias = {1, 2, 1};
+        int[] categorias = {1, 2, 1}; // 1: Junior, 2: Senior
         double[] ventasRealizadas = {500.0, 2000.0, 0.0};
 
         double costeTotalEmpresa = 0;
 
-        // Recorremos la plantilla para calcular la nómina de cada uno
         for (int i = 0; i < nombresEmpleados.length; i++) {
-
-            // --- CÁLCULOS PRINCIPALES (Paso extraer métodos mediante el uso de Métodos)
+            // 4. MÉTODOS EXTRAÍDOS
             double sueldoBase = calcularBruto(horasTrabajadas[i], categorias[i]);
             double comision = calcularComision(ventasRealizadas[i]);
 
-            // El bruto total es la suma de lo que ha trabajado más sus ventas
             double sueldoBrutoTotal = sueldoBase + comision;
-
-            // Calculamos cuanto hay que restarle de IRPF
-            double retencion = sueldoBrutoTotal * IRPF;
-
-            // El sueldo neto después de quitarle las retenciones
+            double retencion = sueldoBrutoTotal * PORCENTAJE_RETENCION;
             double sueldoNeto = sueldoBrutoTotal - retencion;
 
-            // Mostramos el resultado por consola nombrando al empleado y su sueldo neto
-            System.out.println("EMPLEADO: " + nombresEmpleados[i] + " || Sueldo Neto: " + sueldoNeto + " Euros");
+            System.out.println("--------------------------------------------");
+            System.out.println("         --- E M P L E A D O ---  ");
+            System.out.println("--------------------------------------------");
 
-            // Vamos acumulando el gasto total de la empresa sumando el bruto
-            costeTotalEmpresa += sueldoBrutoTotal;
+            System.out.println("EMPLEADO: " + nombresEmpleados[i] + " || Sueldo Neto: " + sueldoNeto + " Euros ");
+
+            costeTotalEmpresa += sueldoNeto;
         }
 
-        // Resumen de lo que ha gastado la empresa en total en este mes
-        System.out.println("   --- COSTE FINAL DE EMPRESA ---");
-        System.out.println("Gasto total en salarios: " + costeTotalEmpresa + " Euros");
+        System.out.println("-------------------------------------------");
+        System.out.println("    --- C O S T E    T O T A L ---");
+        System.out.println("-------------------------------------------");
+        System.out.println("Coste total para la empresa: " + costeTotalEmpresa + " Euros ");
     }
 
-    //Función para calcular el pago por las diferentes categorias con números enteros 
+    // --- MÉTODOS EXTRAÍDOS ---
+    // Calcula el sueldo bruto base según las horas y la categoría.
     public static double calcularBruto(int horas, int categoria) {
         if (categoria == 1) {
-            return horas * CATEGORIA_1;
+            return horas * PAGO_HORA_JUNIOR;
         } else if (categoria == 2) {
-            return horas * CATEGORIA_2;
+            return horas * PAGO_HORA_SENIOR;
         }
-        return 0; // Por si hubiera una categoría que no existe
+        return 0;
     }
 
-    //Creamos un método público para que calcule la comisión de ventas, con dos decimales
+    // Calcula la comisión basada en el volumen de ventas.
     public static double calcularComision(double ventas) {
-        if (ventas > COMISION_INTERMEDIA) {
-            return ventas * COMISION_ALTA;//Para comisiones de ventas altas
+        if (ventas > LIMITE_VENTAS_COMISION) {
+            return ventas * COMISION_ALTA;
         } else {
-            return ventas * COMISION_BAJA;//Para comisiones de ventas bajas
+            return ventas * COMISION_BAJA;
         }
     }
 }
-
 
