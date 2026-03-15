@@ -1,47 +1,70 @@
-public static void main(String[] args) {
+public class CalculoNominas1 {
 
-        //EN ESTE COMMIT SOLO HEMOS CUMPLIDO EL OBJETIVO DE CAMBIAR LAS VARIABLES PARA QUE SEAN MÁS DESCRIPTIVAS
-        // --- Configuración de datos de los empleados ---
+    // (Paso de Constantes)
+    // Nombramos las variables con números fijos aquí arriba para que no se puedan modificar
+    private static final double CATEGORIA_1 = 10.0; // Precio hora categoría baja
+    private static final double CATEGORIA_2 = 20.0; // Precio hora categoría alta
+    private static final double COMISION_INTERMEDIA = 1000.0; // A partir de cuánto se paga más comisión
+    private static final double COMISION_ALTA = 0.10; // El 10% para los que hacen muchas ventas
+    private static final double COMISION_BAJA = 0.05; // El 5% para el resto de empleados con menos ventas
+    private static final double IRPF = 0.15;
+
+    public static void main(String[] args) {
+
+        // --- LISTADO DE TRABAJADORES (Paso Renamme: Nombres descriptivos)
         String[] nombresEmpleados = {"Ana", "Juan", "Elena"};
         int[] horasTrabajadas = {160, 180, 140};
-        int[] categorias = {1, 2, 1}; // Define el pago por hora según la categoria
+        int[] categorias = {1, 2, 1};
         double[] ventasRealizadas = {500.0, 2000.0, 0.0};
-        double costeTotalEmpresa = 0; // Acumulador para el gasto total en salarios brutos
 
-        // --- Proceso de cálculo de nóminas ---
+        double costeTotalEmpresa = 0;
+
+        // Recorremos la plantilla para calcular la nómina de cada uno
         for (int i = 0; i < nombresEmpleados.length; i++) {
-            double salarioBruto = 0;
 
-            // 1. Cálculo del sueldo base según la categoría del trabajador
-            if (categorias[i] == 1) {
-                // Multiplicamos las horas por la tarifa de la categoría 1
-                salarioBruto = horasTrabajadas[i] * 10;
-            } else if (categorias[i] == 2) {
-                // Multiplicamos las horas por la tarifa de la categoría 2
-                salarioBruto = horasTrabajadas[i] * 20;
-            }
+            // --- CÁLCULOS PRINCIPALES (Paso extraer métodos mediante el uso de Métodos)
+            double sueldoBase = calcularBruto(horasTrabajadas[i], categorias[i]);
+            double comision = calcularComision(ventasRealizadas[i]);
 
-            // 2. Cálculo del incentivo por comisión
-            if (ventasRealizadas[i] > 1000) {
-                // Aplicamos un 10% si las ventas superan los 1000 euros 
-                salarioBruto += (ventasRealizadas[i] * 0.10);
-            } else {
-                // Aplicamos un 5% para ventas iguales o inferiores a 1000 eruos 
-                salarioBruto += (ventasRealizadas[i] * 0.05);
-            }
+            // El bruto total es la suma de lo que ha trabajado más sus ventas
+            double sueldoBrutoTotal = sueldoBase + comision;
 
-            // 3. Aplicación el 15% de retenciones IRPF 
-            double retencionIrpf = salarioBruto * 0.15;
-            double sueldoNeto = salarioBruto - retencionIrpf; // Sueldo líquido a percibir
+            // Calculamos cuanto hay que restarle de IRPF
+            double retencion = sueldoBrutoTotal * IRPF;
 
-            // --- Salida en pantalla de resultados ---
-            System.out.println("EMPLEADO: " + nombresEmpleados[i] + " || Sueldo Neto: " + sueldoNeto + " Euros ");
+            // El sueldo neto después de quitarle las retenciones
+            double sueldoNeto = sueldoBrutoTotal - retencion;
 
-            // Sumamos el bruto al total para obtener el coste real para la empresa
-            costeTotalEmpresa += salarioBruto;
+            // Mostramos el resultado por consola nombrando al empleado y su sueldo neto
+            System.out.println("EMPLEADO: " + nombresEmpleados[i] + " || Sueldo Neto: " + sueldoNeto + " Euros");
+
+            // Vamos acumulando el gasto total de la empresa sumando el bruto
+            costeTotalEmpresa += sueldoBrutoTotal;
         }
-        // Imprimimos en pantalla el coste total para la empresa
-        System.out.println("    --- RESUMEN DE COSTES ---  ");
-        System.out.println("El coste total para la empresa es de " + costeTotalEmpresa + " Euros ");
+
+        // Resumen de lo que ha gastado la empresa en total en este mes
+        System.out.println("   --- COSTE FINAL DE EMPRESA ---");
+        System.out.println("Gasto total en salarios: " + costeTotalEmpresa + " Euros");
+    }
+
+    //Función para calcular el pago por las diferentes categorias con números enteros 
+    public static double calcularBruto(int horas, int categoria) {
+        if (categoria == 1) {
+            return horas * CATEGORIA_1;
+        } else if (categoria == 2) {
+            return horas * CATEGORIA_2;
+        }
+        return 0; // Por si hubiera una categoría que no existe
+    }
+
+    //Creamos un método público para que calcule la comisión de ventas, con dos decimales
+    public static double calcularComision(double ventas) {
+        if (ventas > COMISION_INTERMEDIA) {
+            return ventas * COMISION_ALTA;//Para comisiones de ventas altas
+        } else {
+            return ventas * COMISION_BAJA;//Para comisiones de ventas bajas
+        }
     }
 }
+
+
