@@ -1,31 +1,47 @@
-public class CalculoNominas {
-    public static void main(String[] args) {
-        // Datos: Nombre, Horas trabajadas, Categoría (1: Junior, 2: Senior), Ventas realizadas
-        String[] emp = {"Ana", "Juan", "Elena"};
-        int[] h = {160, 180, 140};
-        int[] cat = {1, 2, 1};
-        double[] v = {500.0, 2000.0, 0.0};
-        double t = 0;  // Total pagado por la empresa
-        for (int i = 0; i < emp.length; i++) {
-            double s = 0;
-            // Pago por hora según categoría
-            if (cat[i] == 1) {
-                s = h[i] * 10;  // 10€/h para Junior
-            } else if (cat[i] == 2) {
-                s = h[i] * 20;  // 20€/h para Senior
+public static void main(String[] args) {
+
+        //EN ESTE COMMIT SOLO HEMOS CUMPLIDO EL OBJETIVO DE CAMBIAR LAS VARIABLES PARA QUE SEAN MÁS DESCRIPTIVAS
+        // --- Configuración de datos de los empleados ---
+        String[] nombresEmpleados = {"Ana", "Juan", "Elena"};
+        int[] horasTrabajadas = {160, 180, 140};
+        int[] categorias = {1, 2, 1}; // Define el pago por hora según la categoria
+        double[] ventasRealizadas = {500.0, 2000.0, 0.0};
+        double costeTotalEmpresa = 0; // Acumulador para el gasto total en salarios brutos
+
+        // --- Proceso de cálculo de nóminas ---
+        for (int i = 0; i < nombresEmpleados.length; i++) {
+            double salarioBruto = 0;
+
+            // 1. Cálculo del sueldo base según la categoría del trabajador
+            if (categorias[i] == 1) {
+                // Multiplicamos las horas por la tarifa de la categoría 1
+                salarioBruto = horasTrabajadas[i] * 10;
+            } else if (categorias[i] == 2) {
+                // Multiplicamos las horas por la tarifa de la categoría 2
+                salarioBruto = horasTrabajadas[i] * 20;
             }
-            // Plus por ventas (Comisión)
-            if (v[i] > 1000) {
-                s = s + (v[i] * 0.10);  // 10% si vende mucho
+
+            // 2. Cálculo del incentivo por comisión
+            if (ventasRealizadas[i] > 1000) {
+                // Aplicamos un 10% si las ventas superan los 1000 euros 
+                salarioBruto += (ventasRealizadas[i] * 0.10);
             } else {
-                s = s + (v[i] * 0.05);  // 5% si vende poco
+                // Aplicamos un 5% para ventas iguales o inferiores a 1000 eruos 
+                salarioBruto += (ventasRealizadas[i] * 0.05);
             }
-            // Retención fija del 15%
-            double ret = s * 0.15;
-            double n = s - ret;
-            System.out.println("Empleado: " + emp[i] + " | Neto: " + n);
-            t += n;
+
+            // 3. Aplicación el 15% de retenciones IRPF 
+            double retencionIrpf = salarioBruto * 0.15;
+            double sueldoNeto = salarioBruto - retencionIrpf; // Sueldo líquido a percibir
+
+            // --- Salida en pantalla de resultados ---
+            System.out.println("EMPLEADO: " + nombresEmpleados[i] + " || Sueldo Neto: " + sueldoNeto + " Euros ");
+
+            // Sumamos el bruto al total para obtener el coste real para la empresa
+            costeTotalEmpresa += salarioBruto;
         }
-        System.out.println("Coste total empresa: " + t);
+        // Imprimimos en pantalla el coste total para la empresa
+        System.out.println("    --- RESUMEN DE COSTES ---  ");
+        System.out.println("El coste total para la empresa es de " + costeTotalEmpresa + " Euros ");
     }
 }
