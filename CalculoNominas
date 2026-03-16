@@ -1,6 +1,7 @@
 public class CalculoNominas {
-    // He creado estas constantes para no tener "números mágicos" sueltos por el código
-    // De esta manera si el año que viene sube el sueldo base o cambia el IRPF, solo tenemos que modificarlo aquí.
+    
+    // Hemos creado estas constantes para no tener "números mágicos" sueltos por el código
+    // Así, si el año que viene sube el sueldo base o cambia el IRPF, solo tenemos que modificarlo aquí
     static final double SUELDO_JUNIOR = 10.0;
     static final double SUELDO_SENIOR = 20.0;
     static final double COMISION_ALTA = 0.10;
@@ -9,43 +10,56 @@ public class CalculoNominas {
     static final double LIMITE_VENTAS = 1000.0;
 
     public static void main(String[] args) {
-        // Hemos cambiado las variables de una sola letra por palabras para que se entienda mejor
-        // Por ejemplo, 'emp' ahora es 'empleados' y 'h' ahora es 'horas'      
-        String[] empleados = {"Ana", "Juan", "Elena"};
+        // Datos iniciales
+        // Hemos cambiado las variables de una sola letra por palabras completas para que se entienda mejor. 
+        String[] empleados = {"Ana", "Juan", "Elena"}; 
         int[] horas = {160, 180, 140};
-        int[] categoria = {1, 2, 1};
-        double[] ventas = {500.0, 2000.0, 0.0};
-
-    // Cambiamos 't' por 'totalEmpresa' para saber de un vistazo qué guarda esta variable
-        double totaldeempresa = 0;  // Total pagado por la empresa
+        int[] categorias = {1, 2, 1}; 
+        double[] ventas = {500.0, 2000.0, 0.0}; 
+        
+        // Cambiamos 't' por 'totalEmpresa' 
+        double totalEmpresa = 0;  
 
         for (int i = 0; i < empleados.length; i++) {
-            double salariobruto = 0;
+            
+            // El 'main' ahora está limpio, hemos delegado el cálculo del bruto y la comisión a métodos externos
+            // Así es mucho más fácil de leer qué está pasando con cada empleado
+            double salarioBase = calcularBruto(horas[i], categorias[i]);
+            double comision = calcularComision(ventas[i]);
+            
+            // Calculamos el bruto total sumando la base y la comisión
+            double salarioBruto = salarioBase + comision;
+            
+            // Sustituimos el 0.15 por la constante RETENCION
+            double retencion = salarioBruto * RETENCION_IRPF;
+            double salarioNeto = salarioBruto - retencion;
 
-        // Aquí hemos quitado el 10 y el 20 de antes, y en su lugar multiplicamos por las constantes.
-            if (categoria[i] == 1) {
-                // Cambiamos la 's' por 'salariobruto'
-                salariobruto = horas[i] * SUELDO_JUNIOR;
-            } else if (categoria[i] == 2) {
-                salariobruto = horas[i] * SUELDO_SENIOR;
-            }
-
-           // Lo mismo para las comisiones y el límite de ventas: adiós al 1000, 0.10 y 0.05 a fuego en el código.
-            if (ventas[i] > LIMITE_VENTAS) {
-                salariobruto = salariobruto + (ventas[i] * COMISION_ALTA);
-            } else {
-                salariobruto = salariobruto + (ventas[i] * COMISION_BAJA);
-            }
-
-
-            // Sustituimos el 0.15 por la constante RETENCION_IRPF
-            // Cambiamos 'ret' por 'retencion' y 'n' por 'salarioneto'
-            double retencion = salariobruto * RETENCION_IRPF;
-            double salarioneto = salariobruto - retencion;
-
-            System.out.println("Empleado: " + empleados[i] + " | Neto: " + salarioneto);
-            totaldeempresa += salarioneto;
+            System.out.println("Empleado: " + empleados[i] + " | Neto: " + salarioNeto);
+            totalEmpresa += salarioNeto;
         }
-        System.out.println("Coste total empresa: " + totaldeempresa);
+        System.out.println("Coste total empresa: " + totalEmpresa);
+    } 
+
+    
+    // Hemos sacado toda la lógica de los 'if' del salario a este método nuevo.
+    // Aquí hemos quitado el 10 y el 20 de antes, y en su lugar multiplicamos por las constantes 
+    public static double calcularBruto(int horas, int categoria) {
+        if (categoria == 1) {
+            return horas * SUELDO_JUNIOR;
+        } else if (categoria == 2) {
+            return horas * SUELDO_SENIOR;
+        }
+        return 0; // Devolvemos 0 por seguridad si entra una categoría rara
     }
-}
+
+    // Y aquí hemos aislado el cálculo de las comisiones para que no estorbe en el bucle principal
+    // Quitamos al 1000, 0.10 y 0.05 a fuego en el código
+    public static double calcularComision(double ventas) {
+        if (ventas > LIMITE_VENTAS) {
+            return ventas * COMISION_ALTA;
+        } else {
+            return ventas * COMISION_BAJA;
+        }
+    }
+
+} 
