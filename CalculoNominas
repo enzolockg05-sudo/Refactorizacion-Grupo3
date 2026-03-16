@@ -23,10 +23,10 @@ public class CalculoNominas {
             double salariobruto = 0;
 
         // Aquí hemos quitado el 10 y el 20 de antes, y en su lugar multiplicamos por las constantes.
-            if (categorias[i] == 1) {
+            if (categoria[i] == 1) {
                 // Cambiamos la 's' por 'salariobruto'
                 salariobruto = horas[i] * SUELDO_JUNIOR;
-            } else if (categorias[i] == 2) {
+            } else if (categoria[i] == 2) {
                 salariobruto = horas[i] * SUELDO_SENIOR;
             }
 
@@ -44,7 +44,7 @@ public class CalculoNominas {
             double salarioneto = salariobruto - retencion;
 
             System.out.println("Empleado: " + empleados[i] + " | Neto: " + salarioneto);
-            totaldeemepresa += salarioneto;
+            totaldeempresa += salarioneto;
         }
         System.out.println("Coste total empresa: " + totaldeempresa);
     }
