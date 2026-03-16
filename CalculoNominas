@@ -1,34 +1,48 @@
 public class CalculoNominas {
+    // He creado estas constantes para no tener "números mágicos" sueltos por el código
+    // De esta manera si el año que viene sube el sueldo base o cambia el IRPF, solo tenemos que modificarlo aquí.
+    static final double SUELDO_JUNIOR = 10.0;
+    static final double SUELDO_SENIOR = 20.0;
+    static final double COMISION_ALTA = 0.10;
+    static final double COMISION_BAJA = 0.05;
+    static final double RETENCION_IRPF = 0.15;
+    static final double LIMITE_VENTAS = 1000.0;
+
     public static void main(String[] args) {
-        // Datos: Nombre, Horas trabajadas, Categoría (1: Junior, 2: Senior), Ventas realizadas
+        // Hemos cambiado las variables de una sola letra por palabras para que se entienda mejor
+        // Por ejemplo, 'emp' ahora es 'empleados' y 'h' ahora es 'horas'      
         String[] empleados = {"Ana", "Juan", "Elena"};
         int[] horas = {160, 180, 140};
         int[] categoria = {1, 2, 1};
         double[] ventas = {500.0, 2000.0, 0.0};
 
+    // Cambiamos 't' por 'totalEmpresa' para saber de un vistazo qué guarda esta variable
         double totaldeempresa = 0;  // Total pagado por la empresa
 
         for (int i = 0; i < empleados.length; i++) {
             double salariobruto = 0;
 
-            // Pago por hora según categoría
-            if (categoria[i] == 1) {
-                salariobruto = horas[i] * 10;  // 10€/h para Junior
-            } else if (categoria[i] == 2) {
-                salariobruto = horas[i] * 20;  // 20€/h para Senior
+        // Aquí hemos quitado el 10 y el 20 de antes, y en su lugar multiplicamos por las constantes.
+            if (categorias[i] == 1) {
+                // Cambiamos la 's' por 'salariobruto'
+                salariobruto = horas[i] * SUELDO_JUNIOR;
+            } else if (categorias[i] == 2) {
+                salariobruto = horas[i] * SUELDO_SENIOR;
             }
 
-            // Plus por ventas (Comisión)
-            if (ventas[i] > 1000) {
-                salariobruto = salariobruto + (ventas[i] * 0.10);  // 10% si vende mucho
+           // Lo mismo para las comisiones y el límite de ventas: adiós al 1000, 0.10 y 0.05 a fuego en el código.
+            if (ventas[i] > LIMITE_VENTAS) {
+                salariobruto = salariobruto + (ventas[i] * COMISION_ALTA);
             } else {
-                salariobruto = salariobruto + (ventas[i] * 0.05);  // 5% si vende poco
+                salariobruto = salariobruto + (ventas[i] * COMISION_BAJA);
             }
 
 
-            // Retención fija del 15%
-            double retencion = salariobruto * 0.15;
+            // Sustituimos el 0.15 por la constante RETENCION_IRPF
+            // Cambiamos 'ret' por 'retencion' y 'n' por 'salarioneto'
+            double retencion = salariobruto * RETENCION_IRPF;
             double salarioneto = salariobruto - retencion;
+
             System.out.println("Empleado: " + empleados[i] + " | Neto: " + salarioneto);
             totaldeemepresa += salarioneto;
         }
