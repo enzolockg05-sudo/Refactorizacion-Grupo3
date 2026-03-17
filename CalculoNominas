@@ -1,38 +1,59 @@
 public class CalculoNominas {
+
     public static void main(String[] args) {
-        
+
         String[] empleados = {"Ana", "Juan", "Elena"};
         int[] horas = {160, 180, 140};
         int[] categoria = {1, 2, 1};
         double[] ventas = {500.0, 2000.0, 0.0};
-        final double vendeMucho = 0.10;
-        final double vendePoco = 0.05;
-        final int horasJunior = 10;
-        final int horasSenior = 20;
+
         double totalCoste = 0;
 
         for (int i = 0; i < empleados.length; i++) {
-            double salario = 0;
 
-            if (categoria[i] == 1) {
-                salario = horas[i] * horasJunior;
-            } else if (categoria[i] == 2) {
-                salario = horas[i] * horasSenior;
-            }
+            double bruto = calcularBruto(horas[i], categoria[i]);
+            double comision = calcularComision(ventas[i]);
 
-            if (ventas[i] > 1000) {
-                salario = salario + (ventas[i] * vendeMucho);
-            } else {
-                salario = salario + (ventas[i] * vendePoco);
-            }
+            double salario = bruto + comision;
+            double salarioNeto = aplicarRetencion(salario);
 
-            double retencionFija = salario * 0.15;
-            double n = salario - retencionFija;
+            System.out.println("Empleado: " + empleados[i] + " | Neto: " + salarioNeto);
 
-            System.out.println("Empleado: " + empleados[i] + " | Neto: " + n);
-            totalCoste += n;
+            totalCoste += salarioNeto;
         }
 
         System.out.println("Coste total empresa: " + totalCoste);
+    }
+
+    // Calcula salario base según horas y categoría
+    public static double calcularBruto(int horas, int categoria) {
+        final int HORAS_JUNIOR = 10;
+        final int HORAS_SENIOR = 20;
+
+        if (categoria == 1) {
+            return horas * HORAS_JUNIOR;
+        } else if (categoria == 2) {
+            return horas * HORAS_SENIOR;
+        } else {
+            return 0; // categoría no válida
+        }
+    }
+
+    // Calcula comisión según ventas
+    public static double calcularComision(double ventas) {
+        final double VENDE_MUCHO = 0.10;
+        final double VENDE_POCO = 0.05;
+
+        if (ventas > 1000) {
+            return ventas * VENDE_MUCHO;
+        } else {
+            return ventas * VENDE_POCO;
+        }
+    }
+
+    // Aplica retención del 15%
+    public static double aplicarRetencion(double salario) {
+        final double RETENCION = 0.15;
+        return salario * (1 - RETENCION);
     }
 }
