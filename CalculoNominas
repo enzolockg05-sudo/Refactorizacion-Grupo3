@@ -1,4 +1,4 @@
-public class CalculoNominas {
+public class hola CalculoNominas {
     public static void main(String[] args) {
         // Datos: Nombre, Horas trabajadas, Categoría (1: Junior, 2: Senior), Ventas realizadas
         String[] empleado = {"Ana", "Juan", "Elena"};
